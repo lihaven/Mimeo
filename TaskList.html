@@ -40,6 +40,11 @@ ul {
     padding:5px;
 }
 
+.done {
+    background-color:#DDD8D5;
+    color:#91966E;
+}
+
 .list-control {
     text-align:right;
     margin:10px;
@@ -58,34 +63,76 @@ ul {
 
     <script>
         $(function() {
+            //make list sortable
             $( "ul" ).addClass("sortable");
-            $( ".sortable" ).sortable();
+            $( ".sortable" ).sortable({
+                items: "li:not(.done)"
+            });
             $( ".sortable" ).disableSelection();
             format( $( "li" ) );
             
+            //Listener for when the new task button
             $( ".add" ).click(function() {
-                var li = $( '<li> <span class="desc">NewTask 7</span> </li>' );
+                var li = $( '<li> <span class="comp"><input type="checkbox"></span>'+ 
+                            '<span class="desc">NewTask 7</span>'+
+                            '<span class="task-btns"></span></li>');
                 $( ".main-list" ).append( li );
                 format( li );
             });
-            
+           
+            //Listener for the delete buttons 
             $( ".main-list" ).delegate( ".del", "click", function() {
                 $(this).closest('li').detach();
             });
 
+
+            //When an edit button on the task is clicked, allow the user to 
+            //change the description.
+            //could probalby just use the main obj instead of getting btn
             $( ".main-list" ).delegate( ".edit", "click", function() {
                 var obj = $(this).closest("li").find(".desc");
-                var desc = obj.html();
-                obj.html('<input type="text" value="'+desc+'">');
+                var btn = $(this).closest("li").find(".edit");
+                if (!btn.hasClass("btn-primary")) { //don't do again on primary btn
+                    var desc = obj.html();
+                    obj.html('<input class="new-desc" type="text" value="'+desc+'">');
+                    obj.closest("li").find(".edit").addClass("btn-primary");
+                }
             });
-            
+
+            //When a task description is editable and the primary button is pressed,
+            //save the new value and down grade button status. 
+            $( ".main-list" ).delegate( ".btn-primary", "click", function() {
+                var obj = $(this).closest("li");
+                var desc = obj.find(".new-desc").val();
+                obj.find(".desc").html(desc);
+                obj.find(".edit").removeClass("btn-primary");
+                console.log(obj.closest("li"));
+            });
+           
+            //Listener: When complete checkbox is modified, format appropriately
+            $( ".main-list" ).delegate( ".check", "click", function() {
+                if ($(this).is(':checked')) {
+                    ($(this).closest("li")).addClass("done").disableSelection();
+                }
+                else {
+                    ($(this).closest("li")).removeClass("done");
+                }
+            });
+             
+            //Adds task formating and buttons to specified li element
             function format(li) {
-                li.addClass("task")
-                  .append(
+                li.addClass("task");
+                li.find(".task-btns").append(
                     '<a href="#" class="btn del"><i class="icon-minus"></i></a>' + 
                     '<a href="#" class="btn edit"><i class="icon-edit"></i></a>'
                   );
             }
+
+            //Formats a completed task
+            function formatComplete(li) {
+                li.addClass("done");
+            }
+
         });
     </script>
 
@@ -97,12 +144,12 @@ ul {
 
     <div class="list-portal">
         <ul class="main-list">
-            <li> <span class="desc">Task 1</span> </li>
-            <li> <span class="desc">Task 2</span> </li>
-            <li> <span class="desc">Task 3</span> </li> 
-            <li> <span class="desc">Task 4</span> </li> 
-            <li> <span class="desc">Task 5</span> </li> 
-            <li> <span class="desc">Task 6</span> </li>
+            <li> <span class="comp"><input class="check done" type="checkbox"></span>  <span class="desc">Task list</span>               <span class="task-btns"></span></li>
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Task list is sortable</span>   <span class="task-btns"></span></li>
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Tasks can be added</span>      <span class="task-btns"></span></li> 
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Tasks can be deleted</span>    <span class="task-btns"></span></li> 
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Descriptions editable</span>   <span class="task-btns"></span></li> 
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Mark tasks as complete</span>  <span class="task-btns"></span></li>
         </ul>
     </div>
 </div>
