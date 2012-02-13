@@ -1,0 +1,110 @@
+<html>
+<head>
+<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+<script type"text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type"text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<!--
+http://www.colourlovers.com/wedding/trends/wedding-invites/7891/Winter_Wonderland
+#DDD8D5 - White Sand
+#E4E4E6 - 669~metric gen 2^3 (Snow)
+#9FA9A0 - Vintage Feel (Pale Green)
+#91966E - Sometime Green (Slightly Forest Green)
+#BCAD90 - FW Oxidized Cream (Light Brown)
+-->
+<style> 
+body {
+    background:#DDD8D5;
+}
+
+.main {
+    background:#E4E4E6;
+    margin:72px;
+    padding-top:72px;
+    padding-bottom:72px;
+    padding-left:72px;
+    padding-right:72px;
+}
+
+ul {
+    list-style:none;
+}
+
+.ui-sortable-helper {
+    background-color:#9FA9A0;
+    list-style:none;
+}
+
+.task {
+    background-color:#91966E;
+    margin:10px;
+    padding:5px;
+}
+
+.list-control {
+    text-align:right;
+    margin:10px;
+}
+
+
+</style>
+
+
+</head>
+<body>
+
+
+<div class="main">
+    <h1>Task List</h1>
+
+    <script>
+        $(function() {
+            $( "ul" ).addClass("sortable");
+            $( ".sortable" ).sortable();
+            $( ".sortable" ).disableSelection();
+            format( $( "li" ) );
+            
+            $( ".add" ).click(function() {
+                var li = $( '<li> <span class="desc">NewTask 7</span> </li>' );
+                $( ".main-list" ).append( li );
+                format( li );
+            });
+            
+            $( ".main-list" ).delegate( ".del", "click", function() {
+                $(this).closest('li').detach();
+            });
+
+            $( ".main-list" ).delegate( ".edit", "click", function() {
+                var obj = $(this).closest("li").find(".desc");
+                var desc = obj.html();
+                obj.html('<input type="text" value="'+desc+'">');
+            });
+            
+            function format(li) {
+                li.addClass("task")
+                  .append(
+                    '<a href="#" class="btn del"><i class="icon-minus"></i></a>' + 
+                    '<a href="#" class="btn edit"><i class="icon-edit"></i></a>'
+                  );
+            }
+        });
+    </script>
+
+    <div class="list-control">
+        <a href="#" class="btn add"><i class="icon-plus"></i></a>
+        <a href="#" class="btn del"><i class="icon-minus"></i></a>
+        <a href="#" class="btn edit"><i class="icon-edit"></i></a>
+    </div>
+
+    <div class="list-portal">
+        <ul class="main-list">
+            <li> <span class="desc">Task 1</span> </li>
+            <li> <span class="desc">Task 2</span> </li>
+            <li> <span class="desc">Task 3</span> </li> 
+            <li> <span class="desc">Task 4</span> </li> 
+            <li> <span class="desc">Task 5</span> </li> 
+            <li> <span class="desc">Task 6</span> </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
