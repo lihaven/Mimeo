@@ -66,12 +66,13 @@ ul {
             //make list sortable
             $( "ul" ).addClass("sortable");
             $( ".sortable" ).sortable({
-                items: "li:not(.done)"
+                items: "li:not(.done)",
+                //makes things unsortable
             });
-            $( ".sortable" ).disableSelection();
+            $( ".sortable" ).disableSelection(); //unsortable
             format( $( "li" ) );
             
-            //Listener for when the new task button
+            //Listener: for when the new task button
             $( ".add" ).click(function() {
                 var li = $( '<li> <span class="comp"><input type="checkbox"></span>'+ 
                             '<span class="desc">NewTask 7</span>'+
@@ -80,13 +81,13 @@ ul {
                 format( li );
             });
            
-            //Listener for the delete buttons 
+            //Listener: for the delete buttons 
             $( ".main-list" ).delegate( ".del", "click", function() {
                 $(this).closest('li').detach();
             });
 
 
-            //When an edit button on the task is clicked, allow the user to 
+            //Listener: When an edit button on the task is clicked, allow the user to 
             //change the description.
             //could probalby just use the main obj instead of getting btn
             $( ".main-list" ).delegate( ".edit", "click", function() {
@@ -99,7 +100,7 @@ ul {
                 }
             });
 
-            //When a task description is editable and the primary button is pressed,
+            //Listener: When a task description is editable and the primary button is pressed,
             //save the new value and down grade button status. 
             $( ".main-list" ).delegate( ".btn-primary", "click", function() {
                 var obj = $(this).closest("li");
@@ -112,8 +113,10 @@ ul {
             //Listener: When complete checkbox is modified, format appropriately
             $( ".main-list" ).delegate( ".check", "click", function() {
                 if ($(this).is(':checked')) {
-                    ($(this).closest("li")).addClass("done").disableSelection();
-                }
+                    ($(this).closest("li")).addClass("done");
+                    ($(this).closest("ul")).sortable("refresh").sortable("disable");
+                    //supposed to make things unsortable, but does not
+                  }
                 else {
                     ($(this).closest("li")).removeClass("done");
                 }
@@ -144,12 +147,11 @@ ul {
 
     <div class="list-portal">
         <ul class="main-list">
-            <li> <span class="comp"><input class="check done" type="checkbox"></span>  <span class="desc">Task list</span>               <span class="task-btns"></span></li>
-            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Task list is sortable</span>   <span class="task-btns"></span></li>
-            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Tasks can be added</span>      <span class="task-btns"></span></li> 
-            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Tasks can be deleted</span>    <span class="task-btns"></span></li> 
-            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Descriptions editable</span>   <span class="task-btns"></span></li> 
-            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Mark tasks as complete</span>  <span class="task-btns"></span></li>
+            <li class="done"> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Done tasks to new list</span>  <span class="task-btns"></span></li>
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Persistant list</span>         <span class="task-btns"></span></li>
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Estimate Duration</span>       <span class="task-btns"></span></li> 
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Calendar View</span>           <span class="task-btns"></span></li> 
+            <li> <span class="comp"><input class="check" type="checkbox"></span>  <span class="desc">Owners</span>                  <span class="task-btns"></span></li>
         </ul>
     </div>
 </div>
