@@ -55,6 +55,18 @@ ul {
     float:right;
 }
 
+.est {
+    padding:8px;
+}
+
+input, textarea {
+    margin-bottom:3px;
+    height:20px;
+}
+
+.new-est {
+    width:50px;
+}
 
 
 </style>
@@ -94,21 +106,32 @@ ul {
         //change the description.
         //could probalby just use the main obj instead of getting btn
         $( ".main-list" ).delegate( ".edit", "click", function() {
-            var obj = $(this).closest("li").find(".desc");
             var btn = $(this).closest("li").find(".edit");
             if (!btn.hasClass("btn-primary")) { //don't do again on primary btn
-                var desc = obj.html();
-                obj.html('<input class="new-desc" type="text" value="'+desc+'">');
-                obj.closest("li").find(".edit").addClass("btn-primary");
+                //Description formatting
+                var des = $(this).closest("li").find(".desc");
+                var descText = des.html();
+                des.html('<input class="new-desc" type="text" value="'+descText+'">');
+                //Estimated duration formattting
+                var est = $(this).closest("li").find(".est");
+                var estText = est.html();
+                est.html('<input class="new-est" type="text" value="'+estText+'">');
+                //Button formatting
+                btn.addClass("btn-primary");
             }
         });
 
-        //Listener: When a task description is editable and the primary button is pressed,
-        //save the new value and down grade button status. 
+        //Listener: When a task is editable and the primary button is pressed,
+        //save the new values and down grade button status. 
         $( ".main-list" ).delegate( ".btn-primary", "click", function() {
             var obj = $(this).closest("li");
-            var desc = obj.find(".new-desc").val();
-            obj.find(".desc").html(desc);
+            //Description formatting
+            var des = obj.find(".new-desc").val();
+            obj.find(".desc").html(des);
+            //Estimated duration formatting
+            var est = obj.find(".new-est").val();
+            obj.find(".est").html(est);
+            //Button formatting
             obj.find(".edit").removeClass("btn-primary");
             console.log(obj.closest("li"));
         });
@@ -129,7 +152,7 @@ ul {
         function format(li) {
             li.addClass("task");
             li.find(".task-btns").append(
-                '<a href="#" class="btn est">1</a>' +
+                '<span class="est">1</span>' +
                 '<a href="#" class="btn del"><i class="icon-minus"></i></a>' + 
                 '<a href="#" class="btn edit"><i class="icon-edit"></i></a>'
               );
