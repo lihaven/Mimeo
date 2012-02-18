@@ -96,14 +96,8 @@ input, textarea {
         });
 
 
-        //Listener: When an estimate button is pressed, allow the user to change 
-        //the value of the estimate field
-        $( ".list" ).delegate( ".est", "click", function(){
-            alert("it's working");
-        });
-
         //Listener: When an edit button on the task is clicked, allow the user to 
-        //change the description.
+        //change the editable fields (description, estimate, etc.)
         //could probalby just use the main obj instead of getting btn
         $( ".main-list" ).delegate( ".edit", "click", function() {
             var btn = $(this).closest("li").find(".edit");
@@ -138,11 +132,11 @@ input, textarea {
        
         //Listener: When complete checkbox is modified, format appropriately
         $( ".list" ).delegate( ".check", "click", function() {
-            if ($(this).is(':checked')) {
+            if ($(this).is(':checked')) { //when checkbox has been checked
                 var obj = ($(this).closest("li")).addClass("done");
                 $( ".done-list" ).prepend( obj );
               }
-            else {
+            else { //when checkbox has been UNchecked
                 var obj = ($(this).closest("li")).removeClass("done");
                 $( ".main-list" ).append( obj );
             }
@@ -157,12 +151,6 @@ input, textarea {
                 '<a href="#" class="btn edit"><i class="icon-edit"></i></a>'
               );
         }
-
-        //Formats a completed task
-        function formatComplete(li) {
-            li.addClass("done");
-        }
-
     });
 </script>
 
